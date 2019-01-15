@@ -1,0 +1,21 @@
+# Virtual Environment Stuff
+.venv/
+venv/
+env/
+.env/
+
+# Linux backups
+*~
+
+# Python Extras
+migrations/
+__pycache__/
+*.py[cod]
+
+# Misc
+.DS_Store
+
+build/
+
+# Old README
+oldREADME
