@@ -1,0 +1,127 @@
+BACKEND README
+
+# Helpful Hints
+
+# Good Ideas for Setting Things Up
+1. Things to avoid when commiting files
+    -Don't commit files that are used for the build, such as those located in venv, env, or __pycache__
+        -They're likely to create conflicts, and it's bad practice to include build or binary files
+    -Don't commit your virtual environment!
+        -Each person should make their own virtual env for the project locally on their computer
+            -Different machines may install their requirements differently, and we don't want conflicts
+
+# Helpful Commands for Getting Things Going and Debugging
+1. Helpful Commands Outside of the Virtual Env
+    -To create the virtual environment: 
+        "python3 -m venv <name of virtual environment>"
+   
+    -To enter virtual environment:  
+        ". <name of venv>/bin/activate"
+
+2. Helpful Commands While Inside the Virtual Env
+    -To install requirements for the server while in the virtual environment:
+        "pip install -r requirements.txt"
+
+    -To run the server 
+        "python manage.py runserver"
+    
+    -To make migrations (i.e. updates to the server) after making changes that will be applied to the server 
+        "python manage.py makemigrations "
+    
+    -To apply the migrations that were made using the makemigrations command
+        "python manage.py migrate"
+    
+    -To flush all migrations
+        "python manage.py flush"
+    
+    -To load dummy data into the database, 
+        "python manage.py loaddata data.json"
+            -data.json is the file whose data will be loaded into the database
+    
+    -To dump data from the database and put it into a file called "datadump.json"
+        "python manage.py dumpdata --indent 2 > datadump.json"
+    
+    
+# High Level Ideas That May Clear Things Up
+1. The src/ foler is the high level root location for the project, but it's NOT neccessarily
+   where the urls or other application-specific content for the client facing application should go 
+        -This is a convention we should follow for Django to work correctly
+
+2. Thed urls.py in the api folder, is where client-facing url paths go
+    -This is where we map certain urls to different views, and call .as_view() for different
+     classes defined in views.py 		
+
+3. Views.py is where much of the logic goes for serializing data from the models
+    -We define different classes with names like DonationsView, which serialize
+     data and make a queryset to query from the database
+    -Each class defined in views.py generally has a subclass, which determines
+     what methods and functions it inherits
+        -Different subclasses can give us different functionality for different views 
+
+# Postgresql Commands (helpful for debugging a local postgres database in linux)
+    -To open up postgres with a specific database
+        "psql <name of database>"
+    
+    -To list all the tables in a given database (after accessing it through psql)
+        "\dt" 
+    
+    -To open up general postgres database
+        "psql postgres"
+    
+    -To list all the databases in postgres
+        "\l" (use a lower case L)
+    
+    -To select all columns in a table named api_textbook
+        "select * from api_textbook;"
+    
+    -To delete a column named "dated_added" in a table named "api_textbook"
+        "ALTER TABLE api_textbook DROP COLUMN date_added;"
+    
+    -To quit postgres 
+        "\q"
+
+# Database Commands (These require that local postgres database is on)
+    -To delete a database like djangotutorial
+        "dropdb <name of database>"
+
+    -To create a database like djangotutorial
+        "createdb <name of database>"
+
+# Useful Django Code Snippets
+    - o loop through post parameters in a HTTP request
+        "for key in request.POST:
+            print(key)
+            print(request.POST[key])
+            print("")"
+        
+    -To ask for all book objects from database, without filtering
+            "books = Book.objects.all()"
+  
+    -To ask for all textbook objects from database, with filtering by post_id
+            "books = Book.objects.filter(post_id=2)"
+
+    -To serialize all the books in a database (and thus strip the book data objects of unnecessary fields,
+     or fields we don't need in the result set)
+        -Retrieve the book objects from the database
+            "books = Book.objects.all()"
+
+        -Serialize the books 
+            "serializedBooks= TestSerializer(books, many=True)"
+            
+        -Return the serialized data in a response
+            "return Response(serializedTextbooks.data)"
+
+# Common Problems
+    -You have a column in your database that Django expects, but in your
+     data.json (or whatever file you're trying "loaddata" with), you 
+     have not listed that column/field
+        -Ex: "column "date_added" of relation "api_textbook" does not exist"
+        -SOLUTION: Add the field to data.json or delete column from the database 
+
+# Helpful Links 
+    -Spencer Postgres Tutorial 
+        https://github.com/JumboCode/django-postgres-tutorial?fbclid=IwAR2OYUCsvZQdscLrme6B8yCTYir_iiNHp4SA0UKhdaNvlTQyU15SWnZcu2Q
+    -Spencer Django Tutorial 
+        https://github.com/JumboCode/django-tutorial
+    -Regular Django Tutorial
+        https://docs.djangoproject.com/en/2.1/intro/tutorial01/
