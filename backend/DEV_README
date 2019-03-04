@@ -59,14 +59,24 @@ BACKEND README
         -Different subclasses can give us different functionality for different views 
 
 # Postgresql Commands (helpful for debugging a local postgres database in linux)
+    
+    #####################################################
+    ## For Use On the Command Line, Outside of Postgres #
+    #####################################################
     -To open up postgres with a specific database
         "psql <name of database>"
     
-    -To list all the tables in a given database (after accessing it through psql)
-        "\dt" 
-    
     -To open up general postgres database
         "psql postgres"
+
+    -To create a user that can access the django admin site at localhost:8000/admin
+        "python manage.py createsuperuser"
+
+    ##################################
+    ## For Use Once Inside Postgres ##
+    ##################################
+    -To list all the tables in a given database (after accessing it through psql)
+        "\dt" 
     
     -To list all the databases in postgres
         "\l" (use a lower case L)
@@ -79,6 +89,21 @@ BACKEND README
     
     -To quit postgres 
         "\q"
+
+    -To list user roles
+        "\du"
+    
+    -To create a user 
+        'CREATE USER <username>;'
+
+    -To create a role on psql with privilege 'superuser'
+        "CREATE ROLE <username> superuser;"
+
+    -To create a database with a specific owner 
+        "CREATE DATABASE <db-name> WITH OWNER <owner-name>;"
+ 
+    -To change the owner of a database
+        "ALTER DATABASE <db-name> OWNER to <new-owner>;"
 
 # Database Commands (These require that local postgres database is on)
     -To delete a database like djangotutorial
@@ -125,3 +150,5 @@ BACKEND README
         https://github.com/JumboCode/django-tutorial
     -Regular Django Tutorial
         https://docs.djangoproject.com/en/2.1/intro/tutorial01/
+    -Painless Django Postgres Tutorial  
+        https://medium.com/agatha-codes/painless-postgresql-django-d4f03364989
